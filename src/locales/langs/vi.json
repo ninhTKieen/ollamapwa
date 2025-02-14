@@ -1,5 +1,14 @@
 {
   "ask something": "Nhập gì đó đi",
   "settings": "Cài đặt",
-  "delete chat history": "Xóa lịch sử hội thoại"
+  "delete chat history": "Xóa lịch sử hội thoại",
+  "appearance": "Giao diện",
+  "select a theme": "Chọn giao diện",
+  "system": "Hệ thống",
+  "dark": "Tối",
+  "light": "Sáng",
+  "language": "Ngôn ngữ",
+  "english": "Tiếng Anh",
+  "vietnamese": "Tiếng Việt",
+  "save": "Lưu"
 }

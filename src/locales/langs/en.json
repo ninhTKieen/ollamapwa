@@ -1,5 +1,14 @@
 {
   "ask something": "Ask something",
   "settings": "Settings",
-  "delete chat history": "Delete chat history"
+  "delete chat history": "Delete chat history",
+  "appearance": "Appearance",
+  "select a theme": "Select a theme",
+  "system": "System",
+  "dark": "Dark",
+  "light": "Light",
+  "language": "Language",
+  "english": "English",
+  "vietnamese": "Vietnamese",
+  "save": "Save"
 }
