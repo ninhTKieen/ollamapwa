@@ -1,6 +1,6 @@
 import pluginJs from '@eslint/js';
 import pluginQuery from '@tanstack/eslint-plugin-query';
-import pluginPrettier from 'eslint-config-prettier';
+import pluginPrettier from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
@@ -29,6 +29,7 @@ export default [
       ...pluginReactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      'prettier/prettier': 'error',
     },
   },
 ];
