@@ -3,6 +3,7 @@ import pluginQuery from '@tanstack/eslint-plugin-query';
 import pluginPrettier from 'eslint-plugin-prettier/recommended';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginTailwind from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -18,6 +19,7 @@ export default [
     plugins: {
       react: pluginReact,
       'react-hooks': pluginReactHooks,
+      tailwindcss: pluginTailwind,
     },
     settings: {
       react: {
@@ -27,9 +29,11 @@ export default [
     rules: {
       ...pluginReact.configs.recommended.rules,
       ...pluginReactHooks.configs.recommended.rules,
+      ...pluginTailwind.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       'prettier/prettier': 'error',
+      'tailwindcss/classnames-order': 'error',
     },
   },
 ];
