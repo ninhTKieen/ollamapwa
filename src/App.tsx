@@ -1,5 +1,15 @@
+import { useTranslation } from 'react-i18next';
+
+import { Textarea } from '@/components/ui/textarea';
+
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  const { t } = useTranslation();
+
+  return (
+    <div className="bg-background">
+      <Textarea placeholder={t('ask something')} />
+    </div>
+  );
 }
 
 export default App;
