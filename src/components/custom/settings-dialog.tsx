@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { useSnapshot } from 'valtio';
 import * as zod from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -28,6 +30,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { preferencesState } from '@/lib/states/preferences.state';
+import i18n from '@/locales/i18n';
 
 type Props = {
   open: boolean;
@@ -41,9 +45,14 @@ const formSchema = zod.object({
 
 export const SettingsDialog = ({ open, onOpenChange }: Props) => {
   const { t } = useTranslation();
+  const snap = useSnapshot(preferencesState);
 
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      lang: snap.lang,
+      theme: snap.theme,
+    },
   });
 
   const themeOptions = useMemo(
@@ -63,6 +72,23 @@ export const SettingsDialog = ({ open, onOpenChange }: Props) => {
     [t],
   );
 
+  const onSubmit = async (values: zod.infer<typeof formSchema>) => {
+    preferencesState.theme = values.theme;
+    preferencesState.lang = values.lang;
+    await i18n.changeLanguage(values.lang);
+    toast.success(t('settings updated'));
+    onOpenChange(false);
+  };
+
+  useEffect(() => {
+    if (!open) {
+      form.reset({
+        lang: snap.lang,
+        theme: snap.theme,
+      });
+    }
+  }, [open, form, snap.lang, snap.theme]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-md p-2 md:max-w-[425px]">
@@ -71,7 +97,7 @@ export const SettingsDialog = ({ open, onOpenChange }: Props) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={() => {}} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="theme"
@@ -124,12 +150,12 @@ export const SettingsDialog = ({ open, onOpenChange }: Props) => {
                 </FormItem>
               )}
             />
+
+            <DialogFooter>
+              <Button type="submit">{t('save')}</Button>
+            </DialogFooter>
           </form>
         </Form>
-
-        <DialogFooter>
-          <Button type="submit">{t('save')}</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

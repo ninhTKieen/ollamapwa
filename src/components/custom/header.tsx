@@ -43,7 +43,7 @@ export const Header = () => {
               {t('settings')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive hover:bg-destructive hover:text-destructive-foreground">
+            <DropdownMenuItem className="text-red-500 hover:bg-destructive hover:text-destructive-foreground dark:text-red-400">
               <DeleteIcon />
               {t('delete chat history')}
             </DropdownMenuItem>
