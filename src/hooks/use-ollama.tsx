@@ -1,4 +1,4 @@
-import { Ollama } from 'ollama';
+import { Ollama } from 'ollama/browser';
 import { useMemo } from 'react';
 import { useSnapshot } from 'valtio';
 
