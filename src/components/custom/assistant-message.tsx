@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import 'katex/dist/katex.min.css';
 import { CopyIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -12,15 +11,15 @@ import { toast } from 'sonner';
 
 import { TChatMessage } from '@/common/types';
 import { Button, buttonVariants } from '@/components/ui/button';
+import { dayjs } from '@/lib/date.util';
 import { cn } from '@/lib/utils';
-import i18n from '@/locales/i18n';
 
 import { AssistantImage } from './assistant-image';
 
-type TAssistantMessageProps = {
+interface AssistantMessageProps {
   className?: string;
   message: TChatMessage;
-};
+}
 
 const MarkdownContent = ({ content }: { content: string }) => {
   const { t } = useTranslation();
@@ -34,7 +33,7 @@ const MarkdownContent = ({ content }: { content: string }) => {
         code({ className, children, ...rest }) {
           const match = /language-(\w+)/.exec(className || '');
           return match ? (
-            <div className="overflow-hidden rounded-xl bg-zinc-600">
+            <div className="overflow-x-scroll rounded-xl bg-zinc-600">
               <div className="flex items-center justify-between py-1 pl-2 pr-1">
                 <div className="font-mono text-xs text-white">{match[1]}</div>
                 <Button
@@ -61,7 +60,12 @@ const MarkdownContent = ({ content }: { content: string }) => {
                 customStyle={{
                   margin: 0,
                   overflowX: 'auto',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
                 }}
+                wrapLines={true}
+                wrapLongLines={true}
+                lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
               >
                 {String(children).replace(/\n$/, '')}
               </SyntaxHighlighter>
@@ -90,13 +94,12 @@ const renderContent = (message: TChatMessage) => {
     const thinkMatch = message.content.match(/<think>(.*?)(<\/think>|$)/s);
     const thinkContent = thinkMatch ? thinkMatch[1] : '';
     const mainContent = message.content.replace(/<think>.*?(<\/think>|$)/s, '').trim();
-
     return (
       <>
         {thinkContent && (
           <div className="mb-2 rounded-xl bg-muted p-2">
             <p className="mb-1 text-xs font-medium text-muted-foreground">
-              {mainContent ? i18n.t('done thinking') : `${i18n.t('thinking')} ...`}
+              {mainContent ? 'Think result' : 'Thinking...'}
             </p>
             <MarkdownContent content={thinkContent} />
           </div>
@@ -109,7 +112,9 @@ const renderContent = (message: TChatMessage) => {
   return <MarkdownContent content={message.content} />;
 };
 
-export function AssistantMessage({ message, className }: TAssistantMessageProps) {
+export const AssistantMessage = ({ message, className }: AssistantMessageProps) => {
+  const { i18n } = useTranslation();
+
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       <div className="flex items-center gap-2">
@@ -121,8 +126,10 @@ export function AssistantMessage({ message, className }: TAssistantMessageProps)
       </div>
       <div className="flex flex-col gap-1">
         {renderContent(message)}
-        <div className="text-xs text-muted-foreground">{dayjs(message.timestamp).fromNow()}</div>
+        <div className="text-xs text-muted-foreground">
+          {dayjs(message.timestamp).locale(i18n.language).fromNow()}
+        </div>
       </div>
     </div>
   );
-}
+};

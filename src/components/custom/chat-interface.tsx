@@ -118,38 +118,45 @@ export const ChatInterface = () => {
   }, [chatResponse]);
 
   return (
-    <div className="relative flex flex-1 flex-col">
+    <div className="relative flex h-full flex-1 flex-col">
       {chatHistory.length === 0 ? (
         <div className="mt-4 flex size-full flex-1 flex-col items-center justify-center">
           <AssistantImage model={model} className="size-24" />
           <p className="mb-4 font-mono text-xl font-semibold">{model}</p>
         </div>
       ) : (
-        <div className="grow overflow-y-hidden">
-          <ScrollArea className="flex size-full">
-            {chatMessages.map((message, index) =>
-              message.role === 'assistant' ? (
-                <AssistantMessage key={index.toString()} message={message} className="p-3" />
-              ) : (
-                <UserMessage key={index.toString()} message={message} className="p-3" />
-              ),
-            )}
-            {curResponseMessage.length > 0 && (
-              <AssistantMessage
-                message={{
-                  role: 'assistant',
-                  content: curResponseMessage.join(''),
-                  timestamp: new Date(),
-                  model,
-                }}
-                className="p-3"
-              />
-            )}
-          </ScrollArea>
+        <div className="mb-6 flex h-full flex-col">
+          <div className="grow overflow-y-auto pb-[100px]">
+            <ScrollArea ref={scrollAreaRef} className="flex size-full">
+              {chatMessages.map((message, index) =>
+                message.role === 'assistant' ? (
+                  <AssistantMessage key={index.toString()} message={message} className="p-3" />
+                ) : (
+                  <UserMessage key={index.toString()} message={message} className="p-3" />
+                ),
+              )}
+              {curResponseMessage.length > 0 && (
+                <AssistantMessage
+                  message={{
+                    role: 'assistant',
+                    content: curResponseMessage.join(''),
+                    timestamp: new Date(),
+                    model,
+                  }}
+                  className="p-3"
+                />
+              )}
+            </ScrollArea>
+          </div>
         </div>
       )}
-
-      <ChatInput onSend={handleSend} onAbort={handleAbort} isGenerating={sendMsgMutate.isPending} />
+      <div className="fixed inset-x-0 bottom-0 mt-4 bg-background">
+        <ChatInput
+          onSend={handleSend}
+          onAbort={handleAbort}
+          isGenerating={sendMsgMutate.isPending}
+        />
+      </div>
     </div>
   );
 };
