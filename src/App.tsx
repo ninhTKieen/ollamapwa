@@ -1,18 +1,31 @@
-import { useTranslation } from 'react-i18next';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { Header } from '@/components/custom/header';
-import { Textarea } from '@/components/ui/textarea';
 import '@/locales/i18n';
 
-function App() {
-  const { t } = useTranslation();
+import { ChatInterface } from './components/custom/chat-interface';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
+
+function App() {
   return (
-    <div className="bg-background">
-      <Header />
-      <div className="mt-6" />
-      <Textarea placeholder={t('ask something')} />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div className="flex min-h-screen flex-col bg-background">
+        <Header />
+
+        <ChatInterface />
+      </div>
+
+      <ReactQueryDevtools buttonPosition="bottom-left" />
+    </QueryClientProvider>
   );
 }
 
