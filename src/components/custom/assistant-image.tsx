@@ -24,7 +24,11 @@ export const AssistantImage = ({ model, ...props }: AssistantAvatarProps) => {
 
   return (
     <Avatar {...props}>
-      <AvatarImage src={`/model-images/${modelImagePath}.png`} alt="model-image" />
+      <AvatarImage
+        className="object-contain"
+        src={`/model-images/${modelImagePath}.png`}
+        alt="model-image"
+      />
       <AvatarFallback>{'AI'}</AvatarFallback>
     </Avatar>
   );
