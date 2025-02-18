@@ -6,7 +6,7 @@ import {
   EllipsisVerticalIcon,
   SettingsIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
@@ -14,6 +14,7 @@ import { PROJECT_NAME } from '@/configs/constants';
 import { useCheckOllamaServer } from '@/hooks/use-check-ollama-server';
 import { useGetLocalModels } from '@/hooks/use-get-local-models';
 import { ollamaState } from '@/lib/states/ollama.state';
+import { cn } from '@/lib/utils';
 
 import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from '../ui/dropdown-menu';
@@ -22,6 +23,7 @@ import { SettingsDialog } from './settings-dialog';
 
 export const Header = () => {
   const { t } = useTranslation();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [onOpenSetting, setOnOpenSetting] = useState(false);
 
   const { data: isServerOk } = useCheckOllamaServer();
@@ -30,15 +32,19 @@ export const Header = () => {
 
   const { model } = useSnapshot(ollamaState);
 
+  const handleDeleteChatHistory = useCallback(() => {
+    ollamaState.chatHistory = [];
+  }, []);
+
   return (
     <>
-      <div className="flex justify-between px-2 py-1">
+      <div className="flex justify-between border-b px-2 py-1">
         <Button variant="ghost" className="mr-2 cursor-pointer md:hidden">
           <AlignLeft />
         </Button>
 
         <div className="flex flex-1">
-          <DropdownMenu>
+          <DropdownMenu onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <div className="flex cursor-pointer">
                 <AssistantImage model={model} />
@@ -48,7 +54,12 @@ export const Header = () => {
 
                   <p className="text-xs font-light text-muted-foreground">{model ?? 'AI'}</p>
                 </div>
-                <ChevronDown className="self-center" />
+                <ChevronDown
+                  className={cn(
+                    'self-center transition-transform ease-linear',
+                    isDropdownOpen && 'rotate-180',
+                  )}
+                />
               </div>
             </DropdownMenuTrigger>
 
@@ -82,7 +93,10 @@ export const Header = () => {
               {t('settings')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-500 hover:bg-destructive hover:text-destructive-foreground dark:text-red-400">
+            <DropdownMenuItem
+              className="text-red-500 hover:bg-destructive hover:text-destructive-foreground dark:text-red-400"
+              onSelect={handleDeleteChatHistory}
+            >
               <DeleteIcon />
               {t('delete chat history')}
             </DropdownMenuItem>
