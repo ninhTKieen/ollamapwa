@@ -1,19 +1,21 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSnapshot } from 'valtio';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { settingsState } from '@/lib/states/settings.state';
 
 import { OllamaForm } from './ollama-form';
 import { PreferencesForm } from './preferences-form';
 
-type Props = {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-};
-
-export const SettingsDialog = ({ open, onOpenChange }: Props) => {
+export const SettingsDialog = () => {
   const { t } = useTranslation();
+  const { open } = useSnapshot(settingsState);
+
+  const onOpenChange = useCallback((_open: boolean) => {
+    settingsState.open = _open;
+  }, []);
 
   const tabsList = useMemo(
     () => [

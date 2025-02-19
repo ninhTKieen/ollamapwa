@@ -17,5 +17,7 @@
   "done thinking": "Done thinking",
   "thinking": "Thinking",
   "update your general settings": "Update your general settings. Press Save when you're done.",
-  "update your ollama settings": "Update your Ollama settings. Press Save when you're done."
+  "update your ollama settings": "Update your Ollama settings. Press Save when you're done.",
+  "check ollama server": "Check Ollama server",
+  "open settings": "Open Settings"
 }

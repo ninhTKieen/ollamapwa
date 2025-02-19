@@ -6,6 +6,7 @@ import { Header } from '@/components/custom/header';
 import '@/locales/i18n';
 
 import { ChatInterface } from './components/custom/chat-interface';
+import { SettingsDialog } from './components/custom/settings-dialog';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,8 @@ function App() {
         <Header />
 
         <ChatInterface />
+
+        <SettingsDialog />
       </div>
 
       <ReactQueryDevtools buttonPosition="bottom-left" />

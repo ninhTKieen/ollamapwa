@@ -1,11 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSnapshot } from 'valtio';
 
 import { TChatMessage } from '@/common/types';
+import { useCheckOllamaServer } from '@/hooks/use-check-ollama-server';
 import { useOllama } from '@/hooks/use-ollama';
 import { ollamaState } from '@/lib/states/ollama.state';
+import { settingsState } from '@/lib/states/settings.state';
 
+import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { AssistantImage } from './assistant-image';
 import { AssistantMessage } from './assistant-message';
@@ -19,6 +23,8 @@ type TSendMsg = {
 };
 
 export const ChatInterface = () => {
+  const { data: isServerOk } = useCheckOllamaServer();
+
   const { chatHistory, model } = useSnapshot(ollamaState);
   const ollama = useOllama();
 
@@ -28,6 +34,8 @@ export const ChatInterface = () => {
   const [chatResponse, setChatResponse] = useState<{ abort: () => void }>();
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const { t } = useTranslation();
 
   const scrollToBottom = useCallback(() => {
     if (scrollAreaRef.current && scrollAreaRef.current.children[1]) {
@@ -119,44 +127,61 @@ export const ChatInterface = () => {
 
   return (
     <div className="relative flex h-full flex-1 flex-col">
-      {chatHistory.length === 0 ? (
-        <div className="mt-4 flex size-full flex-1 flex-col items-center justify-center">
-          <AssistantImage model={model} className="size-24" />
-          <p className="mb-4 font-mono text-xl font-semibold">{model}</p>
-        </div>
-      ) : (
-        <div className="mb-6 flex h-full flex-col">
-          <div className="grow overflow-y-auto pb-[100px]">
-            <ScrollArea ref={scrollAreaRef} className="flex size-full">
-              {chatMessages.map((message, index) =>
-                message.role === 'assistant' ? (
-                  <AssistantMessage key={index.toString()} message={message} className="p-3" />
-                ) : (
-                  <UserMessage key={index.toString()} message={message} className="p-3" />
-                ),
-              )}
-              {curResponseMessage.length > 0 && (
-                <AssistantMessage
-                  message={{
-                    role: 'assistant',
-                    content: curResponseMessage.join(''),
-                    timestamp: new Date(),
-                    model,
-                  }}
-                  className="p-3"
-                />
-              )}
-            </ScrollArea>
+      {!isServerOk ? (
+        <>
+          <div className="mt-4 flex size-full flex-1 flex-col items-center justify-center">
+            <p className="mb-4 font-mono text-xl font-semibold">{t('check ollama server')}</p>
+            <Button
+              onClick={() => {
+                settingsState.open = true;
+              }}
+            >
+              {t('open settings')}
+            </Button>
           </div>
-        </div>
+        </>
+      ) : (
+        <>
+          {chatHistory.length === 0 ? (
+            <div className="mt-4 flex size-full flex-1 flex-col items-center justify-center">
+              <AssistantImage model={model} className="size-24" />
+              <p className="mb-4 font-mono text-xl font-semibold">{model}</p>
+            </div>
+          ) : (
+            <div className="mb-6 flex h-full flex-col">
+              <div className="grow overflow-y-auto pb-[100px]">
+                <ScrollArea ref={scrollAreaRef} className="flex size-full">
+                  {chatMessages.map((message, index) =>
+                    message.role === 'assistant' ? (
+                      <AssistantMessage key={index.toString()} message={message} className="p-3" />
+                    ) : (
+                      <UserMessage key={index.toString()} message={message} className="p-3" />
+                    ),
+                  )}
+                  {curResponseMessage.length > 0 && (
+                    <AssistantMessage
+                      message={{
+                        role: 'assistant',
+                        content: curResponseMessage.join(''),
+                        timestamp: new Date(),
+                        model,
+                      }}
+                      className="p-3"
+                    />
+                  )}
+                </ScrollArea>
+              </div>
+            </div>
+          )}
+          <div className="fixed inset-x-0 bottom-0 mt-4 bg-background">
+            <ChatInput
+              onSend={handleSend}
+              onAbort={handleAbort}
+              isGenerating={sendMsgMutate.isPending}
+            />
+          </div>
+        </>
       )}
-      <div className="fixed inset-x-0 bottom-0 mt-4 bg-background">
-        <ChatInput
-          onSend={handleSend}
-          onAbort={handleAbort}
-          isGenerating={sendMsgMutate.isPending}
-        />
-      </div>
     </div>
   );
 };

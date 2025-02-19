@@ -17,5 +17,7 @@
   "done thinking": "Đã nghĩ xong",
   "thinking": "Đang nghĩ",
   "update your general settings": "Cập nhật cài đặt chung. Bấm Lưu để cập nhật.",
-  "update your ollama settings": "Cập nhật cài đặt Ollama. Bấm Lưu để cập nhật."
+  "update your ollama settings": "Cập nhật cài đặt Ollama. Bấm Lưu để cập nhật.",
+  "check ollama server": "Kiểm tra server Ollama",
+  "open settings": "Mở Cài đặt"
 }
