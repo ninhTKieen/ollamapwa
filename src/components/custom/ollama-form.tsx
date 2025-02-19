@@ -94,7 +94,12 @@ export const OllamaForm = ({ open, onOpenChange }: Props) => {
         </Form>
       </CardContent>
       <CardFooter className="md:flex md:justify-end">
-        <Button type="submit" form="ollama-form" className="w-full md:w-fit">
+        <Button
+          disabled={snap.host === form.watch('host') || !form.watch('host')}
+          type="submit"
+          form="ollama-form"
+          className="w-full md:w-fit"
+        >
           {t('save')}
         </Button>
       </CardFooter>
