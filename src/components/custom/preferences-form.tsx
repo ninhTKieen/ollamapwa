@@ -71,7 +71,13 @@ export const PreferencesForm = ({ open, onOpenChange }: Props) => {
     preferencesState.theme = values.theme;
     preferencesState.lang = values.lang;
     await i18n.changeLanguage(values.lang);
-    toast.success(t('settings updated'));
+    toast.success(t('settings updated'), {
+      style: {
+        backgroundColor: 'green',
+        color: 'white',
+        boxShadow: 'var(--shadow)',
+      },
+    });
     onOpenChange(false);
   };
 

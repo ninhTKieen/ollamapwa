@@ -14,7 +14,7 @@ export const SettingsDialog = ({ open, onOpenChange }: Props) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-md p-2 md:max-w-[425px]">
+      <DialogContent className="w-[90%] max-w-md rounded-md p-2">
         <DialogHeader>
           <DialogTitle>{t('settings')}</DialogTitle>
         </DialogHeader>

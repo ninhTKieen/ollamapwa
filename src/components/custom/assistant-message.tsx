@@ -46,7 +46,13 @@ const MarkdownContent = ({ content }: { content: string }) => {
                   })}
                   onClick={async () => {
                     await navigator.clipboard.writeText(String(children).replace(/\n$/, ''));
-                    toast.success(t('copied to clipboard'));
+                    toast.success(t('copied to clipboard'), {
+                      style: {
+                        backgroundColor: 'green',
+                        color: 'white',
+                        boxShadow: 'var(--shadow)',
+                      },
+                    });
                   }}
                 >
                   <CopyIcon />

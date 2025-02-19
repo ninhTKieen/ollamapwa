@@ -38,12 +38,12 @@ export const Header = () => {
 
   return (
     <>
-      <div className="flex justify-between border-b px-2 py-1">
+      <div className="sticky top-0 z-50 flex justify-between border-b bg-background px-2 py-1">
         <Button variant="ghost" className="mr-2 cursor-pointer md:hidden">
           <AlignLeft />
         </Button>
 
-        <div className="flex flex-1">
+        <div className="flex flex-1 justify-center md:justify-start">
           <DropdownMenu onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <div className="flex cursor-pointer">
@@ -63,7 +63,7 @@ export const Header = () => {
               </div>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="z-50 ml-2 mt-2 w-72 rounded-sm border border-muted bg-background shadow-sm">
+            <DropdownMenuContent className="z-50 mt-2 w-screen rounded-sm border border-muted bg-background shadow-sm md:ml-2 md:w-72">
               {localModels.data?.map((model, index) => (
                 <DropdownMenuItem
                   key={index}

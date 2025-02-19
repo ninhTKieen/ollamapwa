@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'sonner';
 
 import { Header } from '@/components/custom/header';
 import '@/locales/i18n';
@@ -25,6 +26,8 @@ function App() {
       </div>
 
       <ReactQueryDevtools buttonPosition="bottom-left" />
+
+      <Toaster />
     </QueryClientProvider>
   );
 }
