@@ -1,11 +1,9 @@
-import { proxy, subscribe } from 'valtio';
+import { proxy } from 'valtio';
 
-export interface ISettingsStates {
+type SettingsState = {
   open: boolean;
-}
+};
 
-export const settingsState = proxy<ISettingsStates>({
+export const settingsState = proxy<SettingsState>({
   open: false,
 });
-
-subscribe(settingsState, () => {});
