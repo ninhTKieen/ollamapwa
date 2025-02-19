@@ -15,5 +15,7 @@
   "general": "Chung",
   "copied to clipboard": "Đã sao chép vào bộ nhớ tạm",
   "done thinking": "Đã nghĩ xong",
-  "thinking": "Đang nghĩ"
+  "thinking": "Đang nghĩ",
+  "update your general settings": "Cập nhật cài đặt chung. Bấm Lưu để cập nhật.",
+  "update your ollama settings": "Cập nhật cài đặt Ollama. Bấm Lưu để cập nhật."
 }

@@ -15,5 +15,7 @@
   "general": "General",
   "copied to clipboard": "Copied to clipboard",
   "done thinking": "Done thinking",
-  "thinking": "Thinking"
+  "thinking": "Thinking",
+  "update your general settings": "Update your general settings. Press Save when you're done.",
+  "update your ollama settings": "Update your Ollama settings. Press Save when you're done."
 }
